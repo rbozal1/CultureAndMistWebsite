@@ -4,7 +4,7 @@ import { getCurrentUser } from '../../../current-user';
 
 export async function GET(request: Request) {
   const user = await getCurrentUser();
-  if (!user) return Response.redirect(new URL('/sign-in?return_to=%2F', request.url), 303);
+  if (!user) return Response.redirect(new URL('/sign-in?return_to=%2Fapi%2Fconnect%2Frefresh', request.url), 303);
 
   try {
     const account = await database().prepare(

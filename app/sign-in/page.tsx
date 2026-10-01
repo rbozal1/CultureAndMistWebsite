@@ -1,6 +1,12 @@
 import { AuthForm } from '../../components/auth-form';
+import { safeAuthReturnTo } from '../../lib/auth-return-to';
 
-export default function SignInPage() {
+export default async function SignInPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ return_to?: string }>;
+}) {
+  const { return_to: returnTo } = await searchParams;
   return (
     <main className="seller-workspace">
       <div className="workspace-heading">
@@ -8,7 +14,7 @@ export default function SignInPage() {
         <h1>Sign in.</h1>
       </div>
       <section className="signin-card">
-        <AuthForm mode="sign-in" />
+        <AuthForm mode="sign-in" returnTo={safeAuthReturnTo(returnTo)} />
       </section>
     </main>
   );

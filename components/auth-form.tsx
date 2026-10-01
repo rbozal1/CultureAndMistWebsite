@@ -6,7 +6,7 @@ import { authClient } from '../lib/auth-client';
 
 type AuthFormMode = 'sign-in' | 'sign-up' | 'reset';
 
-export function AuthForm({ mode, resetToken = null }: { mode: AuthFormMode; resetToken?: string | null }) {
+export function AuthForm({ mode, resetToken = null, returnTo = '/' }: { mode: AuthFormMode; resetToken?: string | null; returnTo?: string }) {
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
@@ -26,7 +26,7 @@ export function AuthForm({ mode, resetToken = null }: { mode: AuthFormMode; rese
       if (mode === 'sign-in') {
         const result = await authClient.signIn.email({ email, password });
         if (result.error) throw new Error(result.error.message);
-        router.replace('/');
+        router.replace(returnTo);
         return;
       }
 
@@ -38,7 +38,7 @@ export function AuthForm({ mode, resetToken = null }: { mode: AuthFormMode; rese
           name,
           email,
           password,
-          callbackURL: '/',
+          callbackURL: returnTo,
         });
         if (result.error) throw new Error(result.error.message);
         setMessage('Check your inbox for a verification link before signing in.');
@@ -86,11 +86,11 @@ export function AuthForm({ mode, resetToken = null }: { mode: AuthFormMode; rese
       </button>
       {message && <p role="status">{message}</p>}
       {error && <p role="alert">{error}</p>}
-      {isSignIn && <p><a href="/reset-password">Forgot password?</a></p>}
+      {isSignIn && <p><a href={`/reset-password?return_to=${encodeURIComponent(returnTo)}`}>Forgot password?</a></p>}
       {isSignUp && <p>We’ll email you a verification link before your account can be used.</p>}
       {(isSignIn || isSignUp) && (
         <p>{isSignIn ? 'New to Culture & Mist?' : 'Already have an account?'}{' '}
-          <a href={isSignIn ? '/sign-up' : '/sign-in'}>{isSignIn ? 'Create an account' : 'Sign in'}</a>
+          <a href={`${isSignIn ? '/sign-up' : '/sign-in'}?return_to=${encodeURIComponent(returnTo)}`}>{isSignIn ? 'Create an account' : 'Sign in'}</a>
         </p>
       )}
       {mode === 'reset' && <p><a href="/sign-in">Back to sign in</a></p>}
