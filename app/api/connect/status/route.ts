@@ -1,9 +1,9 @@
 import { database } from '../../../../db';
 import { retrieveStripeAccount, StripeApiError } from '../../../../lib/stripe-connect';
-import { getChatGPTUser } from '../../../chatgpt-auth';
+import { getCurrentUser } from '../../../current-user';
 
 export async function GET() {
-  const user = await getChatGPTUser();
+  const user = await getCurrentUser();
   if (!user) return Response.json({ connected: false, ready: false }, { status: 401 });
 
   try {

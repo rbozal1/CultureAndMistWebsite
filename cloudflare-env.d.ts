@@ -5,5 +5,9 @@ declare namespace Cloudflare {
     STRIPE_SECRET_KEY?: string;
     STRIPE_WEBHOOK_SECRET?: string;
     STRIPE_APPLICATION_FEE_PERCENT?: string;
+    BETTER_AUTH_SECRET?: string;
+    BETTER_AUTH_URL?: string;
+    RESEND_API_KEY?: string;
+    AUTH_EMAIL_FROM?: string;
   }
 }

@@ -1,10 +1,10 @@
 import { database } from '../../../../db';
 import { createStripeOnboardingLink } from '../../../../lib/stripe-connect';
-import { getChatGPTUser } from '../../../chatgpt-auth';
+import { getCurrentUser } from '../../../current-user';
 
 export async function GET(request: Request) {
-  const user = await getChatGPTUser();
-  if (!user) return Response.redirect(new URL('/?connect=signin', request.url), 303);
+  const user = await getCurrentUser();
+  if (!user) return Response.redirect(new URL('/sign-in?return_to=%2F', request.url), 303);
 
   try {
     const account = await database().prepare(

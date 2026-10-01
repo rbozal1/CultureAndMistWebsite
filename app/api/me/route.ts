@@ -1,5 +1,5 @@
-import { getChatGPTUser } from '../../chatgpt-auth';
+import { getCurrentUser } from '../../current-user';
 export async function GET() {
-  const user = await getChatGPTUser();
+  const user = await getCurrentUser();
   return Response.json({ user: user ? { id: user.userId, name: user.displayName, email: user.email } : null });
 }

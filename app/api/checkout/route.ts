@@ -5,7 +5,7 @@ import {
   expireCheckoutSession,
   retrieveStripeAccount,
 } from '../../../lib/stripe-connect';
-import { getChatGPTUser } from '../../chatgpt-auth';
+import { getCurrentUser } from '../../current-user';
 
 type Listing = {
   id: string;
@@ -26,7 +26,7 @@ async function releaseReservation(orderId: string, listingId: string, status: st
 }
 
 export async function POST(request: Request) {
-  const user = await getChatGPTUser();
+  const user = await getCurrentUser();
   if (!user) return Response.json({ error: 'Sign in to purchase this listing.' }, { status: 401 });
 
   let orderId: string | undefined;

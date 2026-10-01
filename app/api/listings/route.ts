@@ -1,12 +1,12 @@
 import { database, failure } from '../../../db';
-import { getChatGPTUser } from '../../chatgpt-auth';
+import { getCurrentUser } from '../../current-user';
 
 const categories = new Set(['Clothing', 'Shoes', 'Accessories', 'Fragrance', 'Decants', 'Bottles']);
 
 export async function GET(request: Request) {
   try {
     const url = new URL(request.url);
-    const user = await getChatGPTUser();
+    const user = await getCurrentUser();
     const mine = url.searchParams.get('mine') === '1';
     if (mine && !user) return Response.json({ error: 'Sign in to see your listings' }, { status: 401 });
     const db = database();
@@ -18,7 +18,7 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
-  const user = await getChatGPTUser();
+  const user = await getCurrentUser();
   if (!user) return Response.json({ error: 'Sign in to sell' }, { status: 401 });
   try {
     const body = await request.json() as Record<string, unknown>;

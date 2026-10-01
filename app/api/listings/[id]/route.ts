@@ -1,8 +1,8 @@
 import { database, failure } from '../../../../db';
-import { getChatGPTUser } from '../../../chatgpt-auth';
+import { getCurrentUser } from '../../../current-user';
 
 export async function PATCH(request: Request, { params }: { params: Promise<{ id: string }> }) {
-  const user = await getChatGPTUser();
+  const user = await getCurrentUser();
   if (!user) return Response.json({ error: 'Sign in first' }, { status: 401 });
   try {
     const { id } = await params;

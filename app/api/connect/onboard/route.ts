@@ -1,9 +1,9 @@
 import { database } from '../../../../db';
 import { createStripeAccount, createStripeOnboardingLink } from '../../../../lib/stripe-connect';
-import { getChatGPTUser } from '../../../chatgpt-auth';
+import { getCurrentUser } from '../../../current-user';
 
 export async function POST(request: Request) {
-  const user = await getChatGPTUser();
+  const user = await getCurrentUser();
   if (!user) return Response.json({ error: 'Sign in to connect a payout account.' }, { status: 401 });
 
   try {

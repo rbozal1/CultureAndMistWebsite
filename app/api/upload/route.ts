@@ -1,9 +1,9 @@
 import { bucket, failure } from '../../../db';
-import { getChatGPTUser } from '../../chatgpt-auth';
+import { getCurrentUser } from '../../current-user';
 
 const types = new Set(['image/jpeg','image/png','image/webp']);
 export async function POST(request: Request) {
-  const user = await getChatGPTUser();
+  const user = await getCurrentUser();
   if (!user) return Response.json({ error: 'Sign in to upload photos' }, { status: 401 });
   try {
     const data = await request.formData();
